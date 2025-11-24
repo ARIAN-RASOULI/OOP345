@@ -1,0 +1,16 @@
+// Name: Arian Rasouli
+// Email: arasouli4@myseneca.ca
+// Student ID: 120393244
+// Date: 2025-11-22
+//
+// I declare that this submission is the result of my own work and I only copied the code
+// that my professor provided to complete my assignments. This submitted piece of work
+// has not been shared with any other student or 3rd party content provider.
+
+Reflection - Phase 1
+
+I completed the Utilities and Station modules and tested the project using tester_1.cpp 
+The output matches the sample output exactly. 
+This phase helped me understand token parsing and formatting better.
+
+The work in this submission is my own.
