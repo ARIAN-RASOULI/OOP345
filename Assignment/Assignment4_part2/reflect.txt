@@ -1,0 +1,15 @@
+Reflection – Tester 2
+
+In this part I implemented the CustomerOrder module. The main challenge for me 
+was handling the dynamic memory correctly, especially the array of Item pointers 
+and making sure nothing leaks. I also had to get used to disabling the copy 
+constructor and only supporting move semantics, which took a bit of testing 
+until I got it right.
+
+Another thing that needed attention was the formatting of the display() function 
+and the exact output messages in fillItem(), because the tester is very strict 
+about spacing and wording. After a few runs I matched the sample output.
+
+Overall this part helped me understand move semantics and memory management 
+better, and everything worked correctly when I tested it on both Visual Studio 
+and on matrix.
