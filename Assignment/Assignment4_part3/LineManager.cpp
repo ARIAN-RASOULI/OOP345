@@ -17,22 +17,21 @@ namespace seneca {
 
     LineManager::LineManager(const std::string& file, const std::vector<Workstation*>& stations) {
 
-       
-
         std::ifstream fin(file);
         if (!fin)
             throw std::string("Unable to open [") + file + "] file";
 
-        
         Utilities util;
         bool more;
         std::string line, srcName, destName;
 
         while (std::getline(fin, line)) {
+
             size_t pos = 0;
             more = true;
 
             srcName = util.extractToken(line, pos, more);
+
             if (more)
                 destName = util.extractToken(line, pos, more);
             else
@@ -42,14 +41,18 @@ namespace seneca {
             Workstation* src = nullptr;
             auto srcIt = std::find_if(stations.begin(), stations.end(),
                 [&](Workstation* w) { return w->getItemName() == srcName; });
-            if (srcIt != stations.end()) src = *srcIt;
+
+            if (srcIt != stations.end())
+                src = *srcIt;
 
             
             Workstation* dest = nullptr;
             if (!destName.empty()) {
                 auto destIt = std::find_if(stations.begin(), stations.end(),
                     [&](Workstation* w) { return w->getItemName() == destName; });
-                if (destIt != stations.end()) dest = *destIt;
+
+                if (destIt != stations.end())
+                    dest = *destIt;
             }
 
             if (src)
@@ -60,7 +63,6 @@ namespace seneca {
 
         
         m_firstStation = nullptr;
-
         for (auto* ws : stations) {
             bool isDest = false;
 
@@ -77,11 +79,9 @@ namespace seneca {
             }
         }
 
-        
         m_cntCustomerOrder = g_pending.size();
     }
 
-    
     void LineManager::reorderStations() {
         std::vector<Workstation*> ordered;
         Workstation* current = m_firstStation;
@@ -98,30 +98,23 @@ namespace seneca {
         static size_t iteration = 0;
         os << "Line Manager Iteration: " << ++iteration << "\n";
 
-        
         if (!g_pending.empty()) {
             *m_firstStation += std::move(g_pending.front());
             g_pending.pop_front();
         }
 
-        
-        for (auto* ws : m_activeLine) {
+        for (auto* ws : m_activeLine)
             ws->fill(os);
-        }
 
-        
-        for (auto* ws : m_activeLine) {
+        for (auto* ws : m_activeLine)
             ws->attemptToMoveOrder();
-        }
 
-        
         return g_completed.size() + g_incomplete.size() == m_cntCustomerOrder;
     }
 
     void LineManager::display(std::ostream& os) const {
-        for (auto* ws : m_activeLine) {
+        for (auto* ws : m_activeLine)
             ws->display(os);
-        }
     }
 
 }

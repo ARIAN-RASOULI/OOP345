@@ -16,19 +16,15 @@ namespace seneca {
 
     size_t CustomerOrder::m_widthField = 0;
 
-
     CustomerOrder::CustomerOrder() {}
-
 
     CustomerOrder::CustomerOrder(const CustomerOrder& src) {
         throw std::string("ERROR: Cannot make copies.");
     }
 
-
     CustomerOrder::CustomerOrder(CustomerOrder&& src) noexcept {
         *this = std::move(src);
     }
-
 
     CustomerOrder& CustomerOrder::operator=(CustomerOrder&& src) noexcept {
         if (this != &src) {
@@ -52,7 +48,6 @@ namespace seneca {
         return *this;
     }
 
-
     CustomerOrder::CustomerOrder(const std::string& record) {
         Utilities util;
         bool more = true;
@@ -61,10 +56,9 @@ namespace seneca {
         m_name = util.extractToken(record, next_pos, more);
         m_product = util.extractToken(record, next_pos, more);
 
-
+        size_t count = 0;
         size_t temp_pos = next_pos;
         bool temp_more = more;
-        size_t count = 0;
 
         while (temp_more) {
             util.extractToken(record, temp_pos, temp_more);
@@ -74,18 +68,15 @@ namespace seneca {
         m_cntItem = count;
         m_lstItem = new Item * [m_cntItem];
 
-
         for (size_t i = 0; i < m_cntItem; i++) {
             std::string itemName = util.extractToken(record, next_pos, more);
             m_lstItem[i] = new Item(itemName);
         }
 
-
         if (m_widthField < util.getFieldWidth()) {
             m_widthField = util.getFieldWidth();
         }
     }
-
 
     CustomerOrder::~CustomerOrder() {
         if (m_lstItem) {
@@ -95,14 +86,12 @@ namespace seneca {
         }
     }
 
-
     bool CustomerOrder::isOrderFilled() const {
         for (size_t i = 0; i < m_cntItem; i++)
             if (!m_lstItem[i]->m_isFilled)
                 return false;
         return true;
     }
-
 
     bool CustomerOrder::isItemFilled(const std::string& itemName) const {
         for (size_t i = 0; i < m_cntItem; i++) {
@@ -115,8 +104,7 @@ namespace seneca {
     }
 
     void CustomerOrder::fillItem(Station& station, std::ostream& os) {
-        for (size_t i = 0; i < m_cntItem; i++) {
-
+        for (size_t i = 0; i < m_cntItem; ++i) {
             if (m_lstItem[i]->m_itemName == station.getItemName() &&
                 !m_lstItem[i]->m_isFilled) {
 
@@ -128,18 +116,17 @@ namespace seneca {
 
                     os << "    Filled " << m_name << ", " << m_product
                         << " [" << m_lstItem[i]->m_itemName << "]\n";
+
+                    break;
                 }
                 else {
 
                     os << "    Unable to fill " << m_name << ", " << m_product
                         << " [" << m_lstItem[i]->m_itemName << "]\n";
                 }
-
-                return;
             }
         }
     }
-
 
     void CustomerOrder::display(std::ostream& os) const {
         os << m_name << " - " << m_product << "\n";
@@ -150,9 +137,8 @@ namespace seneca {
                 << "] ";
 
             os << std::left << std::setw(m_widthField) << std::setfill(' ')
-                << m_lstItem[i]->m_itemName << " - ";
-
-            os << (m_lstItem[i]->m_isFilled ? "FILLED" : "TO BE FILLED")
+                << m_lstItem[i]->m_itemName << " - "
+                << (m_lstItem[i]->m_isFilled ? "FILLED" : "TO BE FILLED")
                 << "\n";
         }
     }
