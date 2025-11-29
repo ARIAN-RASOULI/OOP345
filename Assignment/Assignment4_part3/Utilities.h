@@ -7,7 +7,6 @@
 // that my professor provided to complete my assignments. This submitted piece of work
 // has not been shared with any other student or 3rd party content provider.
 
-
 #ifndef SENECA_UTILITIES_H
 #define SENECA_UTILITIES_H
 
@@ -36,3 +35,4 @@ namespace seneca {
 }
 
 #endif
+

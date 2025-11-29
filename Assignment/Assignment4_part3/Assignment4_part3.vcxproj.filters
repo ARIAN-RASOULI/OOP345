@@ -52,10 +52,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <Text Include="reflect.txt" />
     <Text Include="Stations1.txt" />
     <Text Include="Stations2.txt" />
     <Text Include="CustomerOrders.txt" />
     <Text Include="AssemblyLine.txt" />
-    <Text Include="reflect.txt" />
   </ItemGroup>
 </Project>

@@ -6,74 +6,60 @@
 // I declare that this submission is the result of my own work and I only copied the code
 // that my professor provided to complete my assignments. This submitted piece of work
 // has not been shared with any other student or 3rd party content provider.
-
 #include <fstream>
 #include <algorithm>
-#include <iostream>
 #include "LineManager.h"
 #include "Utilities.h"
 
 namespace seneca {
 
     LineManager::LineManager(const std::string& file, const std::vector<Workstation*>& stations) {
-
         std::ifstream fin(file);
         if (!fin)
             throw std::string("Unable to open [") + file + "] file";
 
         Utilities util;
-        bool more;
-        std::string line, srcName, destName;
+        std::string line;
+        bool more{ true };
 
         while (std::getline(fin, line)) {
-
             size_t pos = 0;
             more = true;
 
-            srcName = util.extractToken(line, pos, more);
+            std::string src = util.extractToken(line, pos, more);
+            std::string dst = more ? util.extractToken(line, pos, more) : "";
 
-            if (more)
-                destName = util.extractToken(line, pos, more);
-            else
-                destName = "";
+            Workstation* pSrc = nullptr;
+            Workstation* pDst = nullptr;
 
-            
-            Workstation* src = nullptr;
-            auto srcIt = std::find_if(stations.begin(), stations.end(),
-                [&](Workstation* w) { return w->getItemName() == srcName; });
+            auto itSrc = std::find_if(stations.begin(), stations.end(),
+                [&](Workstation* ws) { return ws->getItemName() == src; });
+            if (itSrc != stations.end())
+                pSrc = *itSrc;
 
-            if (srcIt != stations.end())
-                src = *srcIt;
-
-            
-            Workstation* dest = nullptr;
-            if (!destName.empty()) {
-                auto destIt = std::find_if(stations.begin(), stations.end(),
-                    [&](Workstation* w) { return w->getItemName() == destName; });
-
-                if (destIt != stations.end())
-                    dest = *destIt;
+            if (!dst.empty()) {
+                auto itDst = std::find_if(stations.begin(), stations.end(),
+                    [&](Workstation* ws) { return ws->getItemName() == dst; });
+                if (itDst != stations.end())
+                    pDst = *itDst;
             }
 
-            if (src)
-                src->setNextStation(dest);
+            if (pSrc)
+                pSrc->setNextStation(pDst);
 
-            m_activeLine.push_back(src);
+            m_activeLine.push_back(pSrc);
         }
 
-        
         m_firstStation = nullptr;
-        for (auto* ws : stations) {
-            bool isDest = false;
-
-            for (auto* lineWS : stations) {
-                if (lineWS->getNextStation() == ws) {
-                    isDest = true;
+        for (auto* ws : m_activeLine) {
+            bool found = false;
+            for (auto* other : m_activeLine) {
+                if (other && other->getNextStation() == ws) {
+                    found = true;
                     break;
                 }
             }
-
-            if (!isDest) {
+            if (!found) {
                 m_firstStation = ws;
                 break;
             }
@@ -85,12 +71,10 @@ namespace seneca {
     void LineManager::reorderStations() {
         std::vector<Workstation*> ordered;
         Workstation* current = m_firstStation;
-
         while (current) {
             ordered.push_back(current);
             current = current->getNextStation();
         }
-
         m_activeLine = ordered;
     }
 
