@@ -12,7 +12,6 @@
 
 namespace seneca {
 
-    
     std::deque<CustomerOrder> g_pending{};
     std::deque<CustomerOrder> g_completed{};
     std::deque<CustomerOrder> g_incomplete{};
@@ -34,21 +33,14 @@ namespace seneca {
         CustomerOrder& order = m_orders.front();
 
         
-        if (!order.isItemFilled(getItemName())) {
-            if (getQuantity() == 0) {
-                
-                order.fillItem(*this, std::cout);
-            }
-        }
-
-        
         if (order.isItemFilled(getItemName()) || getQuantity() == 0) {
 
             if (m_pNextStation) {
+                
                 *m_pNextStation += std::move(order);
-
             }
             else {
+                
                 if (order.isOrderFilled())
                     g_completed.push_back(std::move(order));
                 else
@@ -77,7 +69,7 @@ namespace seneca {
             os << m_pNextStation->getItemName();
         else
             os << "End of Line";
-        os << "\n";
+        os << '\n';
     }
 
     Workstation& Workstation::operator+=(CustomerOrder&& newOrder) {

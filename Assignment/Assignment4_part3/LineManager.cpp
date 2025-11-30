@@ -96,6 +96,8 @@ namespace seneca {
         return g_completed.size() + g_incomplete.size() == m_cntCustomerOrder;
     }
 
+
+
     void LineManager::display(std::ostream& os) const {
         for (auto* ws : m_activeLine)
             ws->display(os);
