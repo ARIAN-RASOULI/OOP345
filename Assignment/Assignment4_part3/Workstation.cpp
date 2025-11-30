@@ -31,18 +31,24 @@ namespace seneca {
         if (m_orders.empty())
             return false;
 
-        
         CustomerOrder& order = m_orders.front();
+
+        
+        if (!order.isItemFilled(getItemName())) {
+            if (getQuantity() == 0) {
+                
+                order.fillItem(*this, std::cout);
+            }
+        }
 
         
         if (order.isItemFilled(getItemName()) || getQuantity() == 0) {
 
             if (m_pNextStation) {
-                
                 *m_pNextStation += std::move(order);
+
             }
             else {
-                
                 if (order.isOrderFilled())
                     g_completed.push_back(std::move(order));
                 else
@@ -55,6 +61,7 @@ namespace seneca {
 
         return false;
     }
+
 
     void Workstation::setNextStation(Workstation* station) {
         m_pNextStation = station;
