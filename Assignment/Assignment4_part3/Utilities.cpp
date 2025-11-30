@@ -1,3 +1,11 @@
+// Name: Arian Rasouli
+// Email: arasouli4@myseneca.ca
+// Student ID: 120393244
+// Date: 2025-11-22
+//
+// I declare that this submission is the result of my own work and I only copied the code
+// that my professor provided to complete my assignments. This submitted piece of work
+// has not been shared with any other student or 3rd party content provider.
 #include "Utilities.h"
 #include <stdexcept>
 
